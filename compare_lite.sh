@@ -1,15 +1,36 @@
 #!/bin/bash
-file=swaptions_truncated_1
+
+protocol=0
+cachesize=32000
+assoc=4
+blocksize=64
+procs=17
+
+
+
+file=swaptions_truncated_small
 rm run_lite.txt
 rm valid_lite.txt
 echo "Making...."
 make clean; make
 
-echo "Getting validation set..."
-./simulate_cache_ref 32000 4 64 16 0 $file > valid_lite.txt
+echo "|-------------------------|"
+echo "| Sim Params              |"
+echo "|-------------------------|"
+echo "| protocol=====> [$protocol]"
+echo "| cachesize====> [$cachesize]"
+echo "| association==> [$assoc]"
+echo "| blocksize====> [$blocksize]"
+echo "| processors===> [$procs]"
+echo "|-------------------------|"
 
-#echo "Getting calculated set..."
-#./dsm 32000 32000 4 64 16 0 $file > run_lite.txt
+if [[ $1 -eq 1 ]]
+then
+echo "Getting validation set..."
+./simulate_cache_ref $cachesize $assoc $blocksize $procs $protocol $file > valid_lite.txt
+fi
+echo "Getting calculated set..."
+./dsm $cachesize $assoc $blocksize $procs $protocol $file $file > run_lite.txt
 
 
 echo "done!"

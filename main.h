@@ -15,6 +15,7 @@ void print_input_format();
 void create_processor_cache(int np,int s,int a,int b,
 							int p, ulong d_s, int t);
 int sharers(ulong addr);
+int sharers_exclude(ulong addr, int proc_no);
 void simulate_caches(char *fname, int instr_count);
 void sendInt(ulong addr, int proc_num);
 void sendInv(ulong addr, int proc_num);

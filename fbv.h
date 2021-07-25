@@ -7,7 +7,8 @@
 #include "directory.h"
 class FBV: public dir_entry {
  private:
-	bool bit[16];
+	static const int MAX_PROCS=16;
+	bool bit[MAX_PROCS];
  
  public:
 	unsigned long get_dir_tag() { return dir_entry::tag; }
@@ -22,4 +23,5 @@ class FBV: public dir_entry {
 	//proc_num - processor number invoking the function
 	void sendInv_to_sharer(ulong addr, int num_proc, int proc_num);
 	void sendInt_to_sharer(ulong addr, int num_proc, int proc_num);
+	bool isValid(int);
 };

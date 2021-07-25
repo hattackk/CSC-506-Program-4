@@ -146,6 +146,22 @@ int sharers(ulong addr) {
 	return count;
 } 
 //
+////      Return the number of sharers of the block other than the processor calling this fucntion
+////
+int sharers_exclude(ulong addr, int proc_no) {
+        int count = 0;
+        for (int i = 0; i < num_processors; i++){
+                if (i!=proc_no) {
+                  if (processor_cache[i]->find_line(addr) != NULL) {
+                        if (processor_cache[i]->find_line(addr)->get_state() != I) {
+                        count++;
+                        }
+                  }
+                }
+        }
+        return count;
+}
+//
 void sendInv(ulong addr, int proc_num){
 	processor_cache[proc_num]->Inv(addr);
 }
