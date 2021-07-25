@@ -24,4 +24,5 @@ class FBV: public dir_entry {
 	void sendInv_to_sharer(ulong addr, int num_proc, int proc_num);
 	void sendInt_to_sharer(ulong addr, int num_proc, int proc_num);
 	bool isValid(int);
+ 	void print_vector();
 };

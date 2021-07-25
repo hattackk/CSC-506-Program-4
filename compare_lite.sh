@@ -4,7 +4,7 @@ protocol=0
 cachesize=32000
 assoc=4
 blocksize=64
-procs=17
+procs=16
 
 
 

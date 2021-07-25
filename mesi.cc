@@ -38,6 +38,8 @@ void MESI::PrRd(ulong addr, int processor_number) {
     current_cycle++;
     reads++;
     cache_line *line = find_line(addr);
+    if(line != NULL)
+        printf("Proc:%d calling signal Read on addr:%ld\nState:%d\n",processor_number,addr,line->get_state());
 
     if ((line == NULL) || (line->get_state() == I)) {
         cache_line *newline = allocate_line(addr);
@@ -49,8 +51,9 @@ void MESI::PrRd(ulong addr, int processor_number) {
             memory_transactions++;
             newline->set_state(E);
         }
-
-        bus_reads++;
+        
+        signal_rds++;
+        
         signalRd(addr, processor_number);
     } else {
         state = line->get_state();
@@ -77,7 +80,7 @@ void MESI::PrWr(ulong addr, int processor_number) {
             memory_transactions++;
         }
         newline->set_state(M);
-        bus_readxs++;
+        signal_rdxs++;
         signalRdX(addr, processor_number);
     }
 
@@ -95,7 +98,7 @@ void MESI::PrWr(ulong addr, int processor_number) {
         else if (state == S) {
             line->set_state(M);
             update_LRU(line);
-            bus_upgrades++;
+            signal_upgrs++;
             signalUpgr(addr, processor_number);
         }
     }
@@ -141,16 +144,76 @@ void MESI::signalRd(ulong addr, int processor_number) {
     // Send Intervention or Invalidation
 
     // Update the vector/list
+
+    cache_state state;
+    cache_line *line = find_line(addr);
+
+    if (line != NULL) {
+        state = line->get_state();
+
+        if (state == M || state == E) {
+            interventions++;
+            Int(addr);
+            flushes++;
+            //write_backs++;
+            memory_transactions++;
+            line->set_state(S);
+        }
+
+        else if (state == S) {
+        }
+
+        else if (state == E) {
+            interventions++;
+            line->set_state(S);
+            Int(addr);
+        }
+    }
 }
 
 void MESI::signalRdX(ulong addr, int processor_number) {
     // YOUR CODE HERE
     // Refer to signalRd description in the handout
+    cache_state state;
+    cache_line *line = find_line(addr);
+
+    if (line != NULL) {
+        state = line->get_state();
+
+        if (state == S) {
+            invalidations++;
+            line->set_state(I);
+        }
+
+        else if (state == M) {
+            flushes++;
+            write_backs++;
+            memory_transactions++;
+            invalidations++;
+            line->set_state(I);
+        }
+
+        else if (state == E) {
+            invalidations++;
+            line->set_state(I);
+        }
+    }
 }
 
 void MESI::signalUpgr(ulong addr, int processor_number) {
     // YOUR CODE HERE
     // Refer to signalUpgr description in the handout
+    cache_state state;
+    cache_line *line = find_line(addr);
+
+    if (line != NULL) {
+        state = line->get_state();
+
+        if (state == S) {
+            line->set_state(I);
+            invalidations++;
+        }
+    }
 }
 
 void MESI::Int(ulong addr) {
@@ -161,6 +224,7 @@ void MESI::Int(ulong addr) {
     // Update the relevant counter, if the cache copy is dirty,
     // same needs to be written back to main memory. This is
     // achieved by simply updating the writeback counter
+    write_backs++;
 }
 
 void MESI::Inv(ulong addr) {
@@ -170,4 +234,5 @@ void MESI::Inv(ulong addr) {
     // Update the relevant counter, if the cache copy is dirty,
     // same needs to be written back to main memory. This is
     // achieved by simply updating the writeback counter
+    write_backs++;
 }
