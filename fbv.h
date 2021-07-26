@@ -14,7 +14,7 @@ class FBV: public dir_entry {
 	unsigned long get_dir_tag() { return dir_entry::tag; }
 	dir_state get_state() { return dir_entry::state;}
 	void set_dir_state(dir_state d_state) { dir_entry::state = d_state;}
-	void set_dir_tag(unsigned long a) { tag = a; }
+	void set_dir_tag(unsigned long a) { printf("Old tag:%ld, new tag:%ld\n",get_dir_tag(),a);tag = a; }
 	void add_sharer_entry(int proc_num);
 	void remove_sharer_entry(int proc_num);
 	int is_cached(int np);

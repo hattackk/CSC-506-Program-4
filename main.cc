@@ -153,8 +153,10 @@ int sharers_exclude(ulong addr, int proc_no) {
         for (int i = 0; i < num_processors; i++){
                 if (i!=proc_no) {
                   if (processor_cache[i]->find_line(addr) != NULL) {
-                        if (processor_cache[i]->find_line(addr)->get_state() != I) {
-                        count++;
+					  	cache_state state = processor_cache[i]->find_line(addr)->get_state();
+                        if ( state == E || state == M) {
+							printf("A%ld is in state %d in P%d\n",addr,state,i);
+                        	count++;
                         }
                   }
                 }
@@ -163,9 +165,13 @@ int sharers_exclude(ulong addr, int proc_no) {
 }
 //
 void sendInv(ulong addr, int proc_num){
-	processor_cache[proc_num]->Inv(addr);
+	for(int i=0; i<proc_num;i++){
+		processor_cache[proc_num]->Inv(addr);
+	}
 }
 //
 void sendInt(ulong addr, int proc_num) {
-	processor_cache[proc_num]->Int(addr);
+	for(int i=0; i<proc_num;i++){
+		processor_cache[i]->Int(addr);
+	}
 }

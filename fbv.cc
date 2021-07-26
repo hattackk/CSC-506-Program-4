@@ -7,13 +7,14 @@
 #include "fbv.h"
 
 void FBV::print_vector() {
+    printf("TAG:%ld\n",get_dir_tag());
     for (int i = 0; i < 16; i++) {
         printf("[%d]", bit[i]);
     }
     printf("\n");
 }
 
-void FBV::add_sharer_entry(int proc_num) { bit[proc_num] = true; }
+void FBV::add_sharer_entry(int proc_num) { bit[proc_num] = true;print_vector(); }
 
 void FBV::remove_sharer_entry(int proc_num) {
     if (isValid(proc_num)) {
@@ -30,7 +31,6 @@ int FBV::is_cached(int num_proc) {
     // If set, return 1, else send 0
     // Done. (MA)
     if (isValid(num_proc)) {
-        print_vector();
         for (int i = 0; i < num_proc; i++) {
             if (bit[i]) {
                 return true;
