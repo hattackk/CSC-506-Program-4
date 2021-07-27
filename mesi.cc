@@ -39,12 +39,14 @@ void MESI::PrRd(ulong addr, int processor_number) {
     reads++;
     cache_line *line = find_line(addr);
     if ((line == NULL) || (line->get_state() == I)) {
-        //printf("P:%d | A:%ld\n",processor_number,addr);
+        // printf("P:%d | A:%ld\n",processor_number,addr);
         cache_line *newline = allocate_line(addr);
         read_misses++;
         if (sharers_exclude(addr, processor_number) > 0) {
-            cache2cache++;
+            //cache2cache++;
             newline->set_state(S);
+            //signal_rds++;
+            //signalRd(addr, processor_number);
         } else {
             memory_transactions++;
             newline->set_state(E);
@@ -73,7 +75,7 @@ void MESI::PrWr(ulong addr, int processor_number) {
         write_misses++;
         cache_line *newline = allocate_line(addr);
         if (sharers_exclude(addr, processor_number) > 0) {
-            cache2cache++;
+            //cache2cache++;
         } else {
             memory_transactions++;
         }
@@ -119,18 +121,16 @@ cache_line *MESI::allocate_line(ulong addr) {
         int present = 0;
         present = dir_line->is_cached(num_processors);
         if (!present) dir_line->state = U;
-        
     }
 
     tag = tag_field(addr);
     victim->set_tag(tag);
-    //dir_line->set_dir_tag(tag);
+    // dir_line->set_dir_tag(tag);
     victim->set_state(I);
     return victim;
 }
 
 void MESI::signalRd(ulong addr, int processor_number) {
-    
     // YOUR CODE HERE
     // The below comments are for reference and might not be
     // sufficient to match the debug runs.
@@ -144,78 +144,50 @@ void MESI::signalRd(ulong addr, int processor_number) {
     // Send Intervention or Invalidation
 
     // Update the vector/list
-/*
-    //cache_state state;
-    cache_line *line = find_line(addr);
-    dir_state state;
-    //dir_entry *dir_line = directory->find_dir_line(addr);
 
+    cache_line *line = find_line(addr);
 
     if (line != NULL) {
         ulong currentTag = line->get_tag();
-        //printf("P%d is Looking for Tag:%ld\n",processor_number,currentTag);
         dir_entry *entry = directory->find_dir_line(currentTag);
-        if(entry==NULL){
-            //printf("Didn't find %ld\n",currentTag);
+        // Directory doesn't contain an entry for this data.
+        if (entry == NULL) {
+            // Find me an empty spot in the directory to place this new line
             entry = directory->find_empty_line(currentTag);
+            // Set the entry tag so we can find it later
             entry->set_dir_tag(currentTag);
+            // Set to exclusive since this is the first processor to ask for it
             entry->set_dir_state(EM);
-            //printf("Updated tag:%ld with a state of %d\n",entry->get_dir_tag(),entry->get_state());
+            // Update vector bit to represent this processor's cache state
             entry->add_sharer_entry(processor_number);
-        }else{
-            //printf("Found Tag %ld\n",currentTag);
-            entry->add_sharer_entry(processor_number);
-            entry->set_dir_state(S_);
-        }
-        //printf("Entry State:%d\n",entry->get_state());
-    
-        state = entry->get_state();
-        if (state == EM) {
-            interventions++;
-            Int(addr);
-            flushes++;
-            // write_backs++;
-            memory_transactions++;
-            entry->set_dir_state(S_);
-        }
-
-        else if (state == S) {}
-        else if (state == E) {
-            interventions++;
-            line->set_state(S);
-            Int(addr);
-        }
-    
-    }
-    */
-
-   cache_line *line = find_line(addr);
-   
-   if(line != NULL){
-       ulong currentTag = line -> get_tag();
-       dir_entry *entry = directory->find_dir_line(currentTag);
-       if(entry == NULL){ //Directory doesn't contain an entry for this data.
-            entry = directory->find_empty_line(currentTag);// Find me an empty spot in the directory to place this new line
-            entry->set_dir_tag(currentTag);//Set the entry tag so we can find it later
-            entry->set_dir_state(EM);//Set to exclusive since this is the first processor to ask for it
-            entry->add_sharer_entry(processor_number);//Update vector bit to represent this processor's cache state
-        }else{//We did find it, so we need to check some thing before we proceed.
-            switch(entry->get_state()){
+        } else { /*We did find it, so we need to check some thing before we
+                    proceed.*/
+            switch (entry->get_state()) {
+                // Directory has this block as Exclusive/Modify. We need to
+                // downgrade the owner cache to S.
                 case EM:
-                    printf("%d requested a block that was in EM\n",processor_number);
-                    //interventions++;
-                    sendInt(addr,processor_number);
+                    cache2cache++;
+                    printf("%d requested a block that was in EM\n",
+                           processor_number);
+                    sendInt(addr, processor_number);
+                    // Set the directory state to Shared.
                     entry->set_dir_state(S_);
+                    // Add requesting Processor to the vector as a sharer.
+                    entry->add_sharer_entry(processor_number);
                     break;
+                /*Directory has the Block as shared, there are likely other
+                procs with the same state. No need to update directory state.*/
                 case S_:
-                    printf("%d requested a block that was in S_\n",processor_number);
+                    printf("%d requested a block that was in S_\n",
+                           processor_number);
+                    // Add requesting processor to vector as a sharer.
+                    entry->add_sharer_entry(processor_number);
                     break;
                 default:
-                    printf("Default action taken?");
+                    /*noop*/;
             }
-
         }
-   }
+    }
 }
 
 void MESI::signalRdX(ulong addr, int processor_number) {
@@ -273,9 +245,9 @@ void MESI::Int(ulong addr) {
     // achieved by simply updating the writeback counter
     cache_state state;
     cache_line *line = find_line(addr);
-    if(line != NULL){
+    if (line != NULL) {
         state = line->get_state();
-        if(state==M||state==E){
+        if (state == M || state == E) {
             interventions++;
             line->set_state(S);
             write_backs++;
