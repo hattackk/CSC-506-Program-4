@@ -14,10 +14,11 @@ void FBV::print_vector() {
     printf("\n");
 }
 
-void FBV::add_sharer_entry(int proc_num) { bit[proc_num] = true;print_vector(); }
+void FBV::add_sharer_entry(int proc_num) { bit[proc_num] = true; }
 
 void FBV::remove_sharer_entry(int proc_num) {
     if (isValid(proc_num)) {
+        //printf("Setting P%d to false\n",proc_num);
         bit[proc_num] = false;
     }
     // YOUR CODE HERE

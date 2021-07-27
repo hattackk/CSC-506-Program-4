@@ -43,11 +43,13 @@ void MESI::PrRd(ulong addr, int processor_number) {
         cache_line *newline = allocate_line(addr);
         read_misses++;
         if (sharers_exclude(addr, processor_number) > 0) {
+            //printf("P%d found shareres of %ld\n",processor_number,addr);
             //cache2cache++;
             newline->set_state(S);
             //signal_rds++;
             //signalRd(addr, processor_number);
         } else {
+            //printf("P%d found no shareres of %ld\n",processor_number,addr);
             memory_transactions++;
             newline->set_state(E);
         }
@@ -57,6 +59,7 @@ void MESI::PrRd(ulong addr, int processor_number) {
         signalRd(addr, processor_number);
     } else {
         state = line->get_state();
+        //printf("_P%d found %ld in state %d\n",processor_number,addr,state);
         if (state == E || state == M || state == S) {
             update_LRU(line);
         }
@@ -66,6 +69,8 @@ void MESI::PrRd(ulong addr, int processor_number) {
 void MESI::PrWr(ulong addr, int processor_number) {
     // YOUR CODE HERE
     // Refer comments for PrRd
+    
+    //printf("write\n");
     cache_state state;
     current_cycle++;
     writes++;
@@ -76,6 +81,12 @@ void MESI::PrWr(ulong addr, int processor_number) {
         cache_line *newline = allocate_line(addr);
         if (sharers_exclude(addr, processor_number) > 0) {
             //cache2cache++;
+            //printf("PrWr from P%d\n",processor_number);
+            print_cache_states(addr);
+            //newline->set_state(M);
+            //signal_rdxs++;
+
+            //signalRdX(addr, processor_number);
         } else {
             memory_transactions++;
         }
@@ -84,6 +95,7 @@ void MESI::PrWr(ulong addr, int processor_number) {
         signalRdX(addr, processor_number);
     } else {
         state = line->get_state();
+        //printf("P%d write state in state %d\n",processor_number,state);
         if (state == E) {
             line->set_state(M);
             update_LRU(line);
@@ -94,6 +106,7 @@ void MESI::PrWr(ulong addr, int processor_number) {
         }
 
         else if (state == S) {
+            //printf("PrWr with upgrade from P%d\n",processor_number);
             line->set_state(M);
             update_LRU(line);
             signal_upgrs++;
@@ -116,7 +129,7 @@ cache_line *MESI::allocate_line(ulong addr) {
     ulong victim_tag = victim->get_tag();
     dir_entry *dir_line = directory->find_dir_line(victim_tag);
     if (dir_line != NULL) {
-        ////printf("%ld Line wasn't null, removing state\n",victim_tag);
+        //////printf("%ld Line wasn't null, removing state\n",victim_tag);
         dir_line->remove_sharer_entry(cache_num);
         int present = 0;
         present = dir_line->is_cached(num_processors);
@@ -152,6 +165,7 @@ void MESI::signalRd(ulong addr, int processor_number) {
         dir_entry *entry = directory->find_dir_line(currentTag);
         // Directory doesn't contain an entry for this data.
         if (entry == NULL) {
+            signal_rds--;
             // Find me an empty spot in the directory to place this new line
             entry = directory->find_empty_line(currentTag);
             // Set the entry tag so we can find it later
@@ -167,8 +181,8 @@ void MESI::signalRd(ulong addr, int processor_number) {
                 // downgrade the owner cache to S.
                 case EM:
                     cache2cache++;
-                    printf("%d requested a block that was in EM\n",
-                           processor_number);
+                    //printf("%d requested a block that was in EM\n",
+                    //       processor_number);
                     sendInt(addr, processor_number);
                     // Set the directory state to Shared.
                     entry->set_dir_state(S_);
@@ -178,8 +192,8 @@ void MESI::signalRd(ulong addr, int processor_number) {
                 /*Directory has the Block as shared, there are likely other
                 procs with the same state. No need to update directory state.*/
                 case S_:
-                    printf("%d requested a block that was in S_\n",
-                           processor_number);
+                    //printf("%d requested a block that was in S_\n",
+                     //      processor_number);
                     // Add requesting processor to vector as a sharer.
                     entry->add_sharer_entry(processor_number);
                     break;
@@ -193,6 +207,7 @@ void MESI::signalRd(ulong addr, int processor_number) {
 void MESI::signalRdX(ulong addr, int processor_number) {
     // YOUR CODE HERE
     // Refer to signalRd description in the handout
+    /*
     cache_state state;
     cache_line *line = find_line(addr);
 
@@ -217,21 +232,90 @@ void MESI::signalRdX(ulong addr, int processor_number) {
             line->set_state(I);
         }
     }
+    */
+   cache_line *line = find_line(addr);
+
+    if (line != NULL) {
+        ulong currentTag = line->get_tag();
+        dir_entry *entry = directory->find_dir_line(currentTag);
+        // Directory doesn't contain an entry for this data.
+        if (entry == NULL) {
+            signal_rdxs--;
+            // Find me an empty spot in the directory to place this new line
+            entry = directory->find_empty_line(currentTag);
+            // Set the entry tag so we can find it later
+            entry->set_dir_tag(currentTag);
+            // Set to exclusive since this is the first processor to ask for it
+            entry->set_dir_state(EM);
+            // Update vector bit to represent this processor's cache state
+            entry->add_sharer_entry(processor_number);
+        } else { /*We did find it, so we need to check some thing before we
+                    proceed.*/
+            switch (entry->get_state()) {
+                // Directory has this block as Exclusive/Modify. We need to
+                // invalidate it.
+                case EM:
+                    cache2cache++;
+                    //printf("%d requested a block that was in EM\n",
+                    //       processor_number);
+                    sendInv(addr, processor_number);
+                    // Leaving state in E/M since this was a RDx
+                    //entry->set_dir_state(S_);
+                    // Add requesting Processor to the vector as a sharer.
+                    entry->add_sharer_entry(processor_number);
+                    break;
+                /*Directory has the Block as shared, there are likely other
+                procs with the same state. No need to update directory state.*/
+                case S_:
+                    //printf("%d requested a block that was in S_\n",
+                    //       processor_number);
+                    // Add requesting processor to vector as a sharer.
+                    sendInv(addr,processor_number);
+                    entry->add_sharer_entry(processor_number);
+                    entry->set_dir_state(EM);
+                    break;
+                default:
+                    /*noop*/;
+            }
+        }
+    }
 }
 
 void MESI::signalUpgr(ulong addr, int processor_number) {
     // YOUR CODE HERE
     // Refer to signalUpgr description in the handout
-    cache_state state;
     cache_line *line = find_line(addr);
 
     if (line != NULL) {
-        state = line->get_state();
-
-        if (state == S) {
-            line->set_state(I);
-            invalidations++;
+        ulong currentTag = line->get_tag();
+        dir_entry *entry = directory->find_dir_line(currentTag);
+        switch (entry->get_state()) {
+            // Directory has this block as Exclusive/Modify. We need to
+            // invalidate it.
+            case EM:
+                cache2cache++;
+                //printf("%d requested a block that was in EM\n",
+                 //       processor_number);
+                sendInv(addr, processor_number);
+                // Leaving state in E/M since this was a RDx
+                //entry->set_dir_state(S_);
+                // Add requesting Processor to the vector as a sharer.
+                entry->add_sharer_entry(processor_number);
+                break;
+            /*Directory has the Block as shared, there are likely other
+            procs with the same state. No need to update directory state.*/
+            case S_:
+                //printf("%d requested a block that was in S_\n",
+                //        processor_number);
+                // Add requesting processor to vector as a sharer.
+                sendInv(addr,processor_number);
+                entry->add_sharer_entry(processor_number);
+                entry->set_dir_state(EM);
+                break;
+            default:
+                /*noop*/;
         }
+        
     }
 }
 
@@ -262,5 +346,28 @@ void MESI::Inv(ulong addr) {
     // Update the relevant counter, if the cache copy is dirty,
     // same needs to be written back to main memory. This is
     // achieved by simply updating the writeback counter
-    write_backs++;
+    
+    cache_state state;
+    cache_line *line = find_line(addr);
+    if (line != NULL) {
+        //printf("I'm getting invalidated?\n");
+        state = line->get_state();
+        switch(state){
+            case M:
+            case E:
+                invalidations++;
+                line->set_state(I);
+                write_backs++;
+                break;
+            case S:
+                invalidations++;
+                line->set_state(I);
+                break;
+            default:
+                /*noop*/;
+        }
+    }else{
+        //printf("Line not found\n");
+    }
+    
 }
