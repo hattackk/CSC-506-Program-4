@@ -186,35 +186,30 @@ void MESI::PrWr(ulong addr, int processor_number) {
 }
 
 cache_line *MESI::allocate_line(ulong addr) {
+    //We have been asked to allocate a new line
     ulong tag;
     cache_state state;
-
+    //Find us a line that can be replaced
     cache_line *victim = find_line_to_replace(addr);
     assert(victim != 0);
-    if (debug) {
-        printf("Found victim to replace for A:%ld\n", addr);
-    }
     state = victim->get_state();
-    if (debug) {
-        printf("Victims state is %d\n", state);
-    }
+    //if the line to be replaced is in Modify state, then we need to write it back
     if (state == M) {
         write_back(addr);
     }
-
+    //What is the tag of our vicitim?
     ulong victim_tag = victim->get_tag();
-    if (debug) {
-        printf("Victim's tag is %ld\n", victim_tag);
-    }
+    //Did our victim live in the directory?
     dir_entry *dir_line = directory->find_dir_line(victim_tag);
     if (dir_line != NULL) {
+        //Yes our victim had a valid directory entry
+        //We need to remove that victim from that entry
         dir_line->remove_sharer_entry(cache_num);
         int present = 0;
-        if (debug) {
-            printf("-----\n");
-        }
+        //is the current directory entry shared by anyone else?
         present = dir_line->is_cached(num_processors);
         if (!present) {
+            //No, so set it to uncached so it can be used as a free line later
             dir_line->state = U;
             dir_line->set_dir_tag(0);
         }
