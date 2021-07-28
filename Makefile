@@ -19,7 +19,7 @@ dsm: $(DSM_OBJ)
 	@echo "---------------------------------------------------------------"
 	
 .cc.o:
-	$(CC) $(CFLAGS)  -c $*.cc
+	$(CC) $(CFLAGS) -g -c $*.cc
 
 clean:
 	rm -f *.o dsm

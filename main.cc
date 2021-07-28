@@ -166,36 +166,42 @@ int sharers_exclude(ulong addr, int proc_no) {
 //
 void sendInv(ulong addr, int proc_num){
 	//printf("P%d calling invalidation for A:%ld\n",proc_num,addr);
+	processor_cache[proc_num]->Inv(addr);
+	/*
 	print_cache_states(addr);
 	for(int i=0; i<num_processors;i++){
 		if(i!=proc_num){
 			cache_line *addr_line = processor_cache[i]->find_line(addr);
 			
 			if (addr_line != NULL) {
-				//printf("Sending Invalidation to P%d\n",i);
+				printf("Sending Invalidation to P%d\n",i);
         		ulong currentTag = addr_line->get_tag();
         		dir_entry *entry = directory->find_dir_line(currentTag);
-				entry->remove_sharer_entry(i);
+				//entry->remove_sharer_entry(i);
 				processor_cache[i]->Inv(addr);
+				if(!entry->others_are_sharing(i,num_processors)){
+					printf("No one is sharing %ld which is in state %d\n",entry->get_dir_tag(),entry->get_state());
+					entry->set_dir_state(U);
+				}
 			}
 		}
-	}
+	}*/
 }
 //
 void sendInt(ulong addr, int proc_num) {
-	for(int i=0; i<num_processors;i++){
-		if(i!=proc_num){
+	//for(int i=0; i<num_processors;i++){
+	//	if(i!=proc_num){
 			//printf("Sending Intervention to P%d\n",i);
-			processor_cache[i]->Int(addr);
-		}
-	}
+			processor_cache[proc_num]->Int(addr);
+	//	}
+	//}
 }
 
 void print_cache_states(ulong addr){
 	for(int i=0; i<num_processors;i++){
 		cache_line *addr_line = processor_cache[i]->find_line(addr);
 		if(addr_line != NULL){
-			//printf("P%d has the line %ld\n",i,addr);
+			printf("((A)(%p))P%d has the line %ld with tag %ld in state%d\n",addr_line,i,addr,addr_line->get_tag(),addr_line->get_state());
 		}else{
 			//printf("P%d does not have the line %ld\n",i,addr);
 		}

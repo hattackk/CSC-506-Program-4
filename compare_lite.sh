@@ -8,7 +8,7 @@ procs=16
 
 
 
-file=swaptions_truncated_1_1_50
+file=swaptions_truncated_small
 rm run_lite.txt
 rm valid_lite.txt
 echo "Making...."
