@@ -48,7 +48,7 @@ void MESI::PrRd(ulong addr, int processor_number) {
         dir_entry *entry = directory->find_dir_line(newline->get_tag());
         if (entry != NULL) {
             // We got back a line from the directory for this. Someone else must
-            // have it. Go check. We will be
+            // have it. Go check.
             if (entry->get_state() == U) {
                 // We found a line, but it isn't owned by anyone. So we will
                 // take it over. We are now exclusive
@@ -57,7 +57,7 @@ void MESI::PrRd(ulong addr, int processor_number) {
                 entry->add_sharer_entry(processor_number);
                 // We will now set the directory state to EM
                 entry->set_dir_state(EM);
-                // we will now assign out tag for the directory line.
+                // we will now assign our tag for the directory line.
                 entry->set_dir_tag(newline->get_tag());
             } else {
                 // We got back a line from the directory for this. But it is in
@@ -109,48 +109,78 @@ void MESI::PrWr(ulong addr, int processor_number) {
     cache_state state;
     current_cycle++;
     writes++;
+    //See if we already have this line in our cache
     cache_line *line = find_line(addr);
-    if (debug) {
-        print_cache_states(addr);
-    }
     if ((line == NULL) || (line->get_state() == I)) {
         write_misses++;
+        //No line found. We didn't have it so allocate a new one.
         cache_line *newline = allocate_line(addr);
-        if (sharers_exclude(addr, processor_number) > 0) {
-            if (debug) {
-                print_cache_states(addr);
+        // check to see if the directory knows about this line
+        dir_entry *entry = directory->find_dir_line(newline->get_tag());
+        if(entry != NULL){
+            //We got back a line from the directory for this. Someone else must have it. Go check.
+            if(entry->get_state() == U){
+                //We found a line, but it isn't owned by anyone. So we will take it over.
+                //We are now Modified.
+                newline->set_state(M);
+                //We will turn our bit on in the directory line.
+                entry->add_sharer_entry(processor_number);
+                // We will now set the directory state to EM
+                entry->set_dir_state(EM);
+                // We will now assign our tag for the directory line.
+                entry->set_dir_tag(newline->get_tag());
+            }else{
+                //We got back a line from the directory for this. But it is in a valid state.
+                //We need to set our state to M for modify, and send a signalRdx so the directory can invalidate everyone else.
+                newline->set_state(M);
+                // We now need to generate a signal write so all other processors can invalidate their states
+                signal_rdxs++;
+                signalRdX(addr,processor_number);
             }
-        } else {
-            memory_transactions++;
+        }else{
+            //Directory entry was null. So we didn't find out tag in the directory. No one has it so we now own it.
+            newline->set_state(M);
+            dir_entry *newentry = directory->find_empty_line(newline->get_tag());
+            // check to make sure the new line's vector is all 0's, this is just a sanity check
+            bool check = newentry->is_cached(num_processors);
+            if(check){
+                printf("new directory line was not empty?\n");
+            }
+            // We will now add ourselves as an owner and set the vector bits
+            newentry->add_sharer_entry(processor_number);
+            // We will now set the directory entry state to EM since we are the only ones who own it.
+            newentry->set_dir_state(EM);
+            // We will set the diretory entry tag to our cached value.
+            newentry->set_dir_tag(newline->get_tag());
         }
-        newline->set_state(M);
-        signal_rdxs++;
-        signalRdX(addr, processor_number);
-    } else {
-        if (debug) {
-            print_cache_states(addr);
-        }
+    }else{
+        // Our cache line wasn't null. This means we already have this value in our cache.
+        //What is our current cache state?
         state = line->get_state();
-        if (debug) {
-            printf("P%d write state in state %d\n", processor_number, state);
-        }
-        if (state == E) {
-            line->set_state(M);
-            update_LRU(line);
-        }
+        switch(state){
+            case E:
+                // We are in exclusive state. That means we can change at will.
+                // Set the state to M.
+                line->set_state(M);
+                update_LRU(line);
+                break;
+            case M:
+                // We are in modified state. That means we can change at will and keep the same state.
+                update_LRU(line);
+                break;
+            case S:
+                // We are in shared state. We need to perform a state upgrade so we can change to state M.
+                // We are now going to M state
+                line->set_state(M);
+                //update the last recenty used line so we know it is less likely to get evicted.
+                update_LRU(line);
+                //We now need to drive a signal upgrade to the interconnect so it is able to invalidate all other sharers.
+                signal_upgrs++;
+                signalUpgr(addr,processor_number);
+                break;
+            default:
+                /*noop*/;
 
-        else if (state == M) {
-            update_LRU(line);
-        }
-
-        else if (state == S) {
-            if (debug) {
-                printf("PrWr with upgrade from P%d\n", processor_number);
-            }
-            line->set_state(M);
-            update_LRU(line);
-            signal_upgrs++;
-            signalUpgr(addr, processor_number);
         }
     }
 }
