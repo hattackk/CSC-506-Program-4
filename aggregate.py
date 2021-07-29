@@ -9,7 +9,7 @@ l1_blck      = 'L1_BLOCKSIZE:'
 procs        = 'NUMBER OF PROCESSORS:'
 protocol     = 'COHERENCE PROTOCOL:'
 trace_file   = 'swaptions_truncated'
-file_name    = 'real.'
+file_name    = 'ref.'
 
 # Cache format
 cache_header = '============ Simulation results (Cache '
