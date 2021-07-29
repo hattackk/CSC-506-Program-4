@@ -362,6 +362,8 @@ void MESI::signalRdX(ulong addr, int processor_number) {
             // have their bits turned to false. We are free to move this entry
             // into a EM state.
             entry->set_dir_state(EM);
+            // We also now need to add our selves as a owner in the vector/list.
+            entry->add_sharer_entry(processor_number);
         } else {
             // Directory state must be in Uncached state and is free to use
             // Surpised we got an Uncached state. This invoking processor should
@@ -393,72 +395,19 @@ void MESI::signalRdX(ulong addr, int processor_number) {
         // Set the tag
         newentry->set_dir_tag(requestedTag);
     }
-
-//This code removal caused a regression in the output. It may not be an actually issue
-//But I'm leaving this here until after I complete the refactor.
-/*     
-    cache_line *line = find_line(addr);
-
-    if (line != NULL) {
-        ulong currentTag = line->get_tag();
-        dir_entry *entry = directory->find_dir_line(currentTag);
-        // Directory doesn't contain an entry for this data.
-        if (entry == NULL || entry->get_state() == U) {
-            signal_rdxs--;
-            // Find me an empty spot in the directory to place this new line
-            entry = directory->find_empty_line(currentTag);
-            // Set the entry tag so we can find it later
-            entry->set_dir_tag(currentTag);
-            // Set to exclusive since this is the first processor to ask for it
-            entry->set_dir_state(EM);
-            // Update vector bit to represent this processor's cache state
-            entry->add_sharer_entry(processor_number);
-        } else { We did find it, so we need to check some thing before we
-                    proceed.
-            switch (entry->get_state()) {
-                // Directory has this block as Exclusive/Modify. We need to
-                // invalidate it.
-                case EM:
-                    cache2cache++;
-                    if (debug) {
-                        printf("%d requested a RDx block that was in EM\n",
-                               processor_number);
-                    }
-                    entry->sendInv_to_sharer(addr, processor_number,
-                                             num_processors);
-                    // Leaving state in E/M since this was a RDx
-                    // Add requesting Processor to the vector as a sharer.
-                    entry->add_sharer_entry(processor_number);
-                    break;
-                Directory has the Block as shared, there are likely other
-                procs with the same state. No need to update directory state.
-                case S_:
-                    if (debug) {
-                        printf("%d requested a Rdx block that was in S_\n",
-                               processor_number);
-                    }
-                    // Add requesting processor to vector as a sharer.
-                    entry->sendInv_to_sharer(addr, processor_number,
-                                             num_processors);
-                    entry->add_sharer_entry(processor_number);
-                    entry->set_dir_state(EM);
-                    break;
-                default:
-                    if (debug) {
-                        printf("Default state%d\n", entry->get_state());
-                    }
-                    entry->add_sharer_entry(processor_number);
-                    entry->set_dir_state(EM);
-                    ;
-            }
-        }
-    } 
-    */
 }
 
 void MESI::signalUpgr(ulong addr, int processor_number) {
     // YOUR CODE HERE
     // Refer to signalUpgr description in the handout
+
+
+
+
+
+
+
+
     cache_line *line = find_line(addr);
 
     if (line != NULL) {
@@ -567,12 +516,13 @@ void MESI::Inv(ulong addr) {
                 line->set_state(I);
                 break;
             default:
+                printf("*");
                 /*noop*/;
         }
         if (debug) {
             printf("%p Final state %d\n", line, line->get_state());
         }
     } else {
-        // printf("Line not found\n");
+         //printf("Line not found\n");
     }
 }
