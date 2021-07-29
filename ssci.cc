@@ -31,7 +31,7 @@ void SSCI::remove_sharer_entry(int proc_num){
 }
 
 int SSCI::is_cached(int proc_num){	
-	printf("is_cached");
+	printf("is_cached\n");
 	if (cache_list.size() > 0) return 1;
 	return 0;
 }
@@ -59,6 +59,7 @@ void SSCI::sendInv_to_sharer(ulong addr, int num_proc, int proc_num){
 	cache_list.clear();
 	cache_list.push_back(proc_num);
 	// Invoke the sendInv function defined in the main function
+	printf("get here\n");
 	sendInv(addr, proc_num);
 
 }
