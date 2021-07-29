@@ -72,7 +72,7 @@ void SSCI::sendInt_to_sharer(ulong addr, int num_proc, int proc_num){
 	// for all the entries in the list except for proc_num. 
 	for (int p = 0; p < num_proc; p++) {
 		if ((p != proc_num)) {
-			sendInv(addr, p);
+			sendInt(addr, p);
 		}
 	}
 }
