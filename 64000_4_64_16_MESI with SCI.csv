@@ -1,0 +1,1 @@
+Cache_Number,reads,read misses,writes,write misses,total miss rate,writebacks,memory transactions,cache-to-cache transfers,interventions,invalidations,flushes,SignalRds issued,SignalRdXs issued,SignalUpgrs issued,BusWrs issued,
