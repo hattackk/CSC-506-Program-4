@@ -31,7 +31,7 @@ int SSCI::is_cached(int proc_num){
 }
 
 int SSCI::others_are_sharing(int proc_num, int num_proc) {
-	printf("others_are_sharing")
+	printf("others_are_sharing");
 	std::list<int>::iterator itr;
 
 	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
