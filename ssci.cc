@@ -75,9 +75,12 @@ void SSCI::sendInt_to_sharer(ulong addr, int num_proc, int proc_num){
 	//
 	// Invoke the sendInt function defined in the main function
 	// for all the entries in the list except for proc_num. 
-	for (int p = 0; p < num_proc; p++) {
-		if ((p != proc_num)) {
-			sendInt(addr, p);
+	std::list<int>::iterator itr;
+
+	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
+		if (*itr != proc_num) {
+			//invalidate all other procs
+			sendInt(addr, *itr);
 		}
 	}
 }
