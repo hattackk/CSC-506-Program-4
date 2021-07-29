@@ -66,24 +66,18 @@ for f in all_files:
                 output = output + ',' + line.replace(miss_rate,'').strip()
             elif writebacks in line:
                 output = output + ',' + line.replace(writebacks,'').strip()
-            elif mem_trans in line:
-                output = output + ',' + line.replace(mem_trans,'').strip()
             elif c2c_trans in line:
                 output = output + ',' + line.replace(c2c_trans,'').strip()
-            elif interven in line:
-                output = output + ',' + line.replace(interven,'').strip()
+            elif sig_rds in line:
+                output = output+ ',' + line.replace(sig_rds,'').strip()
+            elif sig_rdx in line:
+                output = output + ',' + line.replace(sig_rdx,'').strip()
+            elif sig_upg in line:
+                output = output + ',' + line.replace(sig_upg,'').strip()       
             elif invalid in line:
                 output = output + ',' + line.replace(invalid,'').strip()
-            elif flushes in line:
-                output = output + ',' + line.replace(flushes,'').strip()
-            elif bus_rds in line:
-                output = output + ',' + line.replace(bus_rds,'').strip()
-            elif bus_rdx in line:
-                output = output + ',' + line.replace(bus_rdx,'').strip()
-            elif bus_upgrs in line:
-                output = output + ',' + line.replace(bus_upgrs,'').strip()
-            elif bus_wrs in line:
-                output = output + ',' + line.replace(bus_wrs,'').strip()       
+            elif interven in line:
+                output = output + ',' + line.replace(interven,'').strip()
         
         
         
@@ -91,7 +85,7 @@ for f in all_files:
         csv_header = 'Cache_Number,'
         start_char = '.'
         end_char = ':'
-        header_list = [reads,read_miss,writes,write_miss,miss_rate,writebacks,mem_trans,c2c_trans,interven,invalid,flushes,bus_rds,bus_rdx,bus_upgrs,bus_wrs]
+        header_list = [reads,read_miss,writes,write_miss,miss_rate,writebacks,c2c_trans,sig_rds,sig_rdx,sig_upg,invalid,interven]
 
         for col in header_list:
             csv_header = csv_header+col.split(start_char)[1].split(end_char)[0].replace('number of','').strip()+','
