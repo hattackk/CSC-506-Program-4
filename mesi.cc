@@ -526,6 +526,7 @@ void MESI::Inv(ulong addr) {
                     printf("exclu state invalidated\n");
                 }
                 invalidations++;
+                write_backs++;
                 line->set_state(I);
                 break;
             case M:
