@@ -19,15 +19,7 @@ void SSCI::add_sharer_entry(int proc_no){
 }
 
 void SSCI::remove_sharer_entry(int proc_num){
-
-	std::list<int>::iterator itr;
-
-	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
-        if (*itr == proc_num) {
-            cache_list.erase(itr);
-            return;
-        }
-	}
+	cache_list.remove(proc_num);
 }
 
 int SSCI::is_cached(int proc_num){	
