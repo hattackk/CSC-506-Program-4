@@ -23,7 +23,7 @@ void SSCI::remove_sharer_entry(int proc_num){
 	printf("remove_sharer_entry\n");
 	std::list<int>::iterator itr;
 	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
-        if (*itr == proc_no) {
+        if (*itr == proc_num) {
         	cache_list.erase(itr);
             return;
         }
