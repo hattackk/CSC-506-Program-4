@@ -7,7 +7,7 @@
 #include "ssci.h"
 
 void SSCI::add_sharer_entry(int proc_no){
-	printf("add_sharer_entry");
+	printf("add_sharer_entry\n");
     std::list<int>::iterator itr;
 
 	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
@@ -20,8 +20,14 @@ void SSCI::add_sharer_entry(int proc_no){
 }
 
 void SSCI::remove_sharer_entry(int proc_num){
-	printf("remove_sharer_entry");
-	cache_list.remove(proc_num);
+	printf("remove_sharer_entry\n");
+	std::list<int>::iterator itr;
+	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
+        if (*itr == proc_no) {
+        	cache_list.erase(itr);
+            return;
+        }
+	}
 }
 
 int SSCI::is_cached(int proc_num){	
@@ -31,7 +37,7 @@ int SSCI::is_cached(int proc_num){
 }
 
 int SSCI::others_are_sharing(int proc_num, int num_proc) {
-	printf("others_are_sharing");
+	printf("others_are_sharing\n");
 	std::list<int>::iterator itr;
 
 	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
@@ -44,7 +50,7 @@ int SSCI::others_are_sharing(int proc_num, int num_proc) {
 }
 
 void SSCI::sendInv_to_sharer(ulong addr, int num_proc, int proc_num){
-	printf("sendInv_to_sharer");
+	printf("sendInv_to_sharer\n");
 	// YOUR CODE HERE
 	//
 	// Erase the entry from the list except for the latest entry
@@ -58,7 +64,7 @@ void SSCI::sendInv_to_sharer(ulong addr, int num_proc, int proc_num){
 }
 
 void SSCI::sendInt_to_sharer(ulong addr, int num_proc, int proc_num){
-	printf("sendInt_to_sharer");
+	printf("sendInt_to_sharer\n");
 	// YOUR CODE HERE
 	//
 	// Invoke the sendInt function defined in the main function
