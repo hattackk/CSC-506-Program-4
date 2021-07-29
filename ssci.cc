@@ -56,11 +56,16 @@ void SSCI::sendInv_to_sharer(ulong addr, int num_proc, int proc_num){
 	// Erase the entry from the list except for the latest entry
 	// The latest entry will be for the processor which is invoking
 	// this function
+	std::list<int>::iterator itr;
+
+	for (itr = cache_list.begin(); itr != cache_list.end(); std::advance(itr, 1)) {
+		if (*itr != proc_num) {
+			//invalidate all other procs
+			sendInv(addr, *itr);
+		}
+	}
 	cache_list.clear();
 	cache_list.push_back(proc_num);
-	// Invoke the sendInv function defined in the main function
-	printf("get here\n");
-	sendInv(addr, proc_num);
 
 }
 
