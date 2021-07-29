@@ -1,0 +1,364 @@
+1c1
+< ./dsm 32000 4 64 16 0 /afs/eos.ncsu.edu/lockers/workspace/csc/CSC506-1/trace/swaptions_truncated
+---
+> ./simulate_cache_ref 32000 4 64 16 0 /afs/eos.ncsu.edu/lockers/workspace/csc/CSC506-1/trace/swaptions_truncated
+24c24
+< 2 . number of read misses:                47606
+---
+> 2 . number of read misses:                47626
+26,34c26,34
+< 4 . number of write misses:               35396
+< 5 . total miss rate:                      0.062091
+< 6 . number of writebacks:                 50319
+< 7 . number of cache-to-cache transfers:   30880
+< 8 . number of SignalRds:                  39233
+< 9 . number of SignalRdXs:                 16538
+< 10. number of SignalUpgrs                 10521
+< 11. number of invalidations:              30709
+< 12. number of interventions:              14689
+---
+> 4 . number of write misses:               35302
+> 5 . total miss rate:                      0.062035
+> 6 . number of writebacks:                 49673
+> 7 . number of cache-to-cache transfers:   30749
+> 8 . number of SignalRds:                  39228
+> 9 . number of SignalRdXs:                 16435
+> 10. number of SignalUpgrs                 9915
+> 11. number of invalidations:              30598
+> 12. number of interventions:              14089
+37c37
+< 2 . number of read misses:                46860
+---
+> 2 . number of read misses:                46746
+39,47c39,47
+< 4 . number of write misses:               33447
+< 5 . total miss rate:                      0.060273
+< 6 . number of writebacks:                 47765
+< 7 . number of cache-to-cache transfers:   29011
+< 8 . number of SignalRds:                  38645
+< 9 . number of SignalRdXs:                 15581
+< 10. number of SignalUpgrs                 10245
+< 11. number of invalidations:              28794
+< 12. number of interventions:              14264
+---
+> 4 . number of write misses:               33444
+> 5 . total miss rate:                      0.060185
+> 6 . number of writebacks:                 47664
+> 7 . number of cache-to-cache transfers:   28819
+> 8 . number of SignalRds:                  38525
+> 9 . number of SignalRdXs:                 15571
+> 10. number of SignalUpgrs                 10099
+> 11. number of invalidations:              28627
+> 12. number of interventions:              14153
+50c50
+< 2 . number of read misses:                50156
+---
+> 2 . number of read misses:                50091
+52,60c52,60
+< 4 . number of write misses:               38193
+< 5 . total miss rate:                      0.065865
+< 6 . number of writebacks:                 56578
+< 7 . number of cache-to-cache transfers:   34456
+< 8 . number of SignalRds:                  37754
+< 9 . number of SignalRdXs:                 18373
+< 10. number of SignalUpgrs                 10591
+< 11. number of invalidations:              34208
+< 12. number of interventions:              17891
+---
+> 4 . number of write misses:               38423
+> 5 . total miss rate:                      0.065988
+> 6 . number of writebacks:                 57070
+> 7 . number of cache-to-cache transfers:   34551
+> 8 . number of SignalRds:                  37689
+> 9 . number of SignalRdXs:                 18592
+> 10. number of SignalUpgrs                 10792
+> 11. number of invalidations:              34314
+> 12. number of interventions:              18153
+63c63
+< 2 . number of read misses:                50807
+---
+> 2 . number of read misses:                50742
+65,69c65,69
+< 4 . number of write misses:               39178
+< 5 . total miss rate:                      0.067133
+< 6 . number of writebacks:                 55803
+< 7 . number of cache-to-cache transfers:   35546
+< 8 . number of SignalRds:                  40729
+---
+> 4 . number of write misses:               39197
+> 5 . total miss rate:                      0.067098
+> 6 . number of writebacks:                 55856
+> 7 . number of cache-to-cache transfers:   35488
+> 8 . number of SignalRds:                  40664
+71,73c71,73
+< 10. number of SignalUpgrs                 11058
+< 11. number of invalidations:              34733
+< 12. number of interventions:              16416
+---
+> 10. number of SignalUpgrs                 11047
+> 11. number of invalidations:              34630
+> 12. number of interventions:              16513
+76c76
+< 2 . number of read misses:                49798
+---
+> 2 . number of read misses:                49809
+78,86c78,86
+< 4 . number of write misses:               40060
+< 5 . total miss rate:                      0.067144
+< 6 . number of writebacks:                 55850
+< 7 . number of cache-to-cache transfers:   34192
+< 8 . number of SignalRds:                  41454
+< 9 . number of SignalRdXs:                 19764
+< 10. number of SignalUpgrs                 11537
+< 11. number of invalidations:              34644
+< 12. number of interventions:              16126
+---
+> 4 . number of write misses:               39814
+> 5 . total miss rate:                      0.066969
+> 6 . number of writebacks:                 54937
+> 7 . number of cache-to-cache transfers:   33937
+> 8 . number of SignalRds:                  41466
+> 9 . number of SignalRdXs:                 19513
+> 10. number of SignalUpgrs                 10824
+> 11. number of invalidations:              34424
+> 12. number of interventions:              15294
+89c89
+< 2 . number of read misses:                49350
+---
+> 2 . number of read misses:                49260
+91,99c91,99
+< 4 . number of write misses:               35768
+< 5 . total miss rate:                      0.063631
+< 6 . number of writebacks:                 50322
+< 7 . number of cache-to-cache transfers:   31106
+< 8 . number of SignalRds:                  41140
+< 9 . number of SignalRdXs:                 16641
+< 10. number of SignalUpgrs                 10254
+< 11. number of invalidations:              31419
+< 12. number of interventions:              14501
+---
+> 4 . number of write misses:               35740
+> 5 . total miss rate:                      0.063543
+> 6 . number of writebacks:                 50391
+> 7 . number of cache-to-cache transfers:   30958
+> 8 . number of SignalRds:                  41053
+> 9 . number of SignalRdXs:                 16610
+> 10. number of SignalUpgrs                 10280
+> 11. number of invalidations:              31266
+> 12. number of interventions:              14537
+102c102
+< 2 . number of read misses:                52932
+---
+> 2 . number of read misses:                52890
+104,112c104,112
+< 4 . number of write misses:               39328
+< 5 . total miss rate:                      0.068951
+< 6 . number of writebacks:                 54822
+< 7 . number of cache-to-cache transfers:   35082
+< 8 . number of SignalRds:                  44271
+< 9 . number of SignalRdXs:                 19259
+< 10. number of SignalUpgrs                 10909
+< 11. number of invalidations:              35377
+< 12. number of interventions:              15296
+---
+> 4 . number of write misses:               38891
+> 5 . total miss rate:                      0.068593
+> 6 . number of writebacks:                 53846
+> 7 . number of cache-to-cache transfers:   34565
+> 8 . number of SignalRds:                  44253
+> 9 . number of SignalRdXs:                 18820
+> 10. number of SignalUpgrs                 10362
+> 11. number of invalidations:              34843
+> 12. number of interventions:              14579
+115c115
+< 2 . number of read misses:                50542
+---
+> 2 . number of read misses:                50466
+117,125c117,125
+< 4 . number of write misses:               39988
+< 5 . total miss rate:                      0.067574
+< 6 . number of writebacks:                 56687
+< 7 . number of cache-to-cache transfers:   36908
+< 8 . number of SignalRds:                  40503
+< 9 . number of SignalRdXs:                 20569
+< 10. number of SignalUpgrs                 11037
+< 11. number of invalidations:              36240
+< 12. number of interventions:              16937
+---
+> 4 . number of write misses:               40118
+> 5 . total miss rate:                      0.067614
+> 6 . number of writebacks:                 57021
+> 7 . number of cache-to-cache transfers:   36839
+> 8 . number of SignalRds:                  40396
+> 9 . number of SignalRdXs:                 20689
+> 10. number of SignalUpgrs                 11165
+> 11. number of invalidations:              36192
+> 12. number of interventions:              17160
+128c128
+< 2 . number of read misses:                52112
+---
+> 2 . number of read misses:                52142
+130,138c130,138
+< 4 . number of write misses:               40791
+< 5 . total miss rate:                      0.069316
+< 6 . number of writebacks:                 57089
+< 7 . number of cache-to-cache transfers:   37830
+< 8 . number of SignalRds:                  43169
+< 9 . number of SignalRdXs:                 21452
+< 10. number of SignalUpgrs                 11822
+< 11. number of invalidations:              37012
+< 12. number of interventions:              16136
+---
+> 4 . number of write misses:               40861
+> 5 . total miss rate:                      0.069390
+> 6 . number of writebacks:                 57225
+> 7 . number of cache-to-cache transfers:   37873
+> 8 . number of SignalRds:                  43184
+> 9 . number of SignalRdXs:                 21510
+> 10. number of SignalUpgrs                 11828
+> 11. number of invalidations:              37060
+> 12. number of interventions:              16147
+141c141
+< 2 . number of read misses:                41477
+---
+> 2 . number of read misses:                41461
+143,151c143,151
+< 4 . number of write misses:               27659
+< 5 . total miss rate:                      0.052170
+< 6 . number of writebacks:                 39639
+< 7 . number of cache-to-cache transfers:   20771
+< 8 . number of SignalRds:                  33419
+< 9 . number of SignalRdXs:                 9869
+< 10. number of SignalUpgrs                 8136
+< 11. number of invalidations:              20508
+< 12. number of interventions:              11542
+---
+> 4 . number of write misses:               27691
+> 5 . total miss rate:                      0.052182
+> 6 . number of writebacks:                 39723
+> 7 . number of cache-to-cache transfers:   20764
+> 8 . number of SignalRds:                  33396
+> 9 . number of SignalRdXs:                 9892
+> 10. number of SignalUpgrs                 8152
+> 11. number of invalidations:              20477
+> 12. number of interventions:              11574
+154c154
+< 2 . number of read misses:                39566
+---
+> 2 . number of read misses:                39568
+156,164c156,164
+< 4 . number of write misses:               26193
+< 5 . total miss rate:                      0.049829
+< 6 . number of writebacks:                 38116
+< 7 . number of cache-to-cache transfers:   19269
+< 8 . number of SignalRds:                  32008
+< 9 . number of SignalRdXs:                 8802
+< 10. number of SignalUpgrs                 8062
+< 11. number of invalidations:              19090
+< 12. number of interventions:              11258
+---
+> 4 . number of write misses:               26289
+> 5 . total miss rate:                      0.049903
+> 6 . number of writebacks:                 38872
+> 7 . number of cache-to-cache transfers:   19336
+> 8 . number of SignalRds:                  32017
+> 9 . number of SignalRdXs:                 8900
+> 10. number of SignalUpgrs                 8689
+> 11. number of invalidations:              19156
+> 12. number of interventions:              11860
+167c167
+< 2 . number of read misses:                50282
+---
+> 2 . number of read misses:                50342
+169,177c169,177
+< 4 . number of write misses:               39938
+< 5 . total miss rate:                      0.067365
+< 6 . number of writebacks:                 55076
+< 7 . number of cache-to-cache transfers:   36399
+< 8 . number of SignalRds:                  42051
+< 9 . number of SignalRdXs:                 20387
+< 10. number of SignalUpgrs                 10838
+< 11. number of invalidations:              35962
+< 12. number of interventions:              15097
+---
+> 4 . number of write misses:               40032
+> 5 . total miss rate:                      0.067479
+> 6 . number of writebacks:                 55545
+> 7 . number of cache-to-cache transfers:   36421
+> 8 . number of SignalRds:                  42103
+> 9 . number of SignalRdXs:                 20490
+> 10. number of SignalUpgrs                 11163
+> 11. number of invalidations:              36015
+> 12. number of interventions:              15368
+180c180
+< 2 . number of read misses:                36522
+---
+> 2 . number of read misses:                36567
+182,190c182,190
+< 4 . number of write misses:               24469
+< 5 . total miss rate:                      0.046322
+< 6 . number of writebacks:                 36106
+< 7 . number of cache-to-cache transfers:   17787
+< 8 . number of SignalRds:                  29420
+< 9 . number of SignalRdXs:                 8788
+< 10. number of SignalUpgrs                 8262
+< 11. number of invalidations:              17582
+< 12. number of interventions:              11512
+---
+> 4 . number of write misses:               24389
+> 5 . total miss rate:                      0.046295
+> 6 . number of writebacks:                 35844
+> 7 . number of cache-to-cache transfers:   17731
+> 8 . number of SignalRds:                  29460
+> 9 . number of SignalRdXs:                 8710
+> 10. number of SignalUpgrs                 8059
+> 11. number of invalidations:              17543
+> 12. number of interventions:              11272
+193c193
+< 2 . number of read misses:                45669
+---
+> 2 . number of read misses:                45617
+195,203c195,203
+< 4 . number of write misses:               30718
+< 5 . total miss rate:                      0.057161
+< 6 . number of writebacks:                 45138
+< 7 . number of cache-to-cache transfers:   25983
+< 8 . number of SignalRds:                  38156
+< 9 . number of SignalRdXs:                 13005
+< 10. number of SignalUpgrs                 10532
+< 11. number of invalidations:              25817
+< 12. number of interventions:              14314
+---
+> 4 . number of write misses:               30659
+> 5 . total miss rate:                      0.057078
+> 6 . number of writebacks:                 45268
+> 7 . number of cache-to-cache transfers:   25818
+> 8 . number of SignalRds:                  38086
+> 9 . number of SignalRdXs:                 12949
+> 10. number of SignalUpgrs                 10674
+> 11. number of invalidations:              25672
+> 12. number of interventions:              14440
+206c206
+< 2 . number of read misses:                32957
+---
+> 2 . number of read misses:                32998
+208,216c208,216
+< 4 . number of write misses:               20946
+< 5 . total miss rate:                      0.041066
+< 6 . number of writebacks:                 31120
+< 7 . number of cache-to-cache transfers:   13439
+< 8 . number of SignalRds:                  26006
+< 9 . number of SignalRdXs:                 5748
+< 10. number of SignalUpgrs                 6791
+< 11. number of invalidations:              13026
+< 12. number of interventions:              9353
+---
+> 4 . number of write misses:               20897
+> 5 . total miss rate:                      0.041060
+> 6 . number of writebacks:                 30897
+> 7 . number of cache-to-cache transfers:   13462
+> 8 . number of SignalRds:                  26064
+> 9 . number of SignalRdXs:                 5701
+> 10. number of SignalUpgrs                 6589
+> 11. number of invalidations:              13071
+> 12. number of interventions:              9134

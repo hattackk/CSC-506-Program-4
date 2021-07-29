@@ -1,0 +1,8 @@
+./dsm 256000 4 64 16 1 /afs/eos.ncsu.edu/lockers/workspace/csc/CSC506-1/trace/swaptions_truncated
+===== SP19 506 DSM cache configuration =====
+L1_SIZE:              256000
+L1_ASSOC:             4
+L1_BLOCKSIZE:         64
+NUMBER OF PROCESSORS: 16
+COHERENCE PROTOCOL:   MESI with SCI
+TRACE FILE:           /afs/eos.ncsu.edu/lockers/workspace/csc/CSC506-1/trace/swaptions_truncated

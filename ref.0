@@ -1,0 +1,216 @@
+./simulate_cache_ref 32000 4 64 16 0 /afs/eos.ncsu.edu/lockers/workspace/csc/CSC506-1/trace/swaptions_truncated
+===== SP19 506 DSM cache configuration =====
+L1_SIZE:              32000
+L1_ASSOC:             4
+L1_BLOCKSIZE:         64
+NUMBER OF PROCESSORS: 16
+COHERENCE PROTOCOL:   MESI with FBV
+TRACE FILE:           /afs/eos.ncsu.edu/lockers/workspace/csc/CSC506-1/trace/swaptions_truncated
+============ Simulation results (Cache 0) ============ 
+1 . number of reads:                      2580
+2 . number of read misses:                132
+3 . number of writes:                     2615
+4 . number of write misses:               254
+5 . total miss rate:                      0.074302
+6 . number of writebacks:                 283
+7 . number of cache-to-cache transfers:   44
+8 . number of SignalRds:                  69
+9 . number of SignalRdXs:                 0
+10. number of SignalUpgrs                 90
+11. number of invalidations:              153
+12. number of interventions:              176
+============ Simulation results (Cache 1) ============ 
+1 . number of reads:                      1039570
+2 . number of read misses:                47626
+3 . number of writes:                     297218
+4 . number of write misses:               35302
+5 . total miss rate:                      0.062035
+6 . number of writebacks:                 49673
+7 . number of cache-to-cache transfers:   30749
+8 . number of SignalRds:                  39228
+9 . number of SignalRdXs:                 16435
+10. number of SignalUpgrs                 9915
+11. number of invalidations:              30598
+12. number of interventions:              14089
+============ Simulation results (Cache 2) ============ 
+1 . number of reads:                      1036170
+2 . number of read misses:                46746
+3 . number of writes:                     296228
+4 . number of write misses:               33444
+5 . total miss rate:                      0.060185
+6 . number of writebacks:                 47664
+7 . number of cache-to-cache transfers:   28819
+8 . number of SignalRds:                  38525
+9 . number of SignalRdXs:                 15571
+10. number of SignalUpgrs                 10099
+11. number of invalidations:              28627
+12. number of interventions:              14153
+============ Simulation results (Cache 3) ============ 
+1 . number of reads:                      1043517
+2 . number of read misses:                50091
+3 . number of writes:                     297850
+4 . number of write misses:               38423
+5 . total miss rate:                      0.065988
+6 . number of writebacks:                 57070
+7 . number of cache-to-cache transfers:   34551
+8 . number of SignalRds:                  37689
+9 . number of SignalRdXs:                 18592
+10. number of SignalUpgrs                 10792
+11. number of invalidations:              34314
+12. number of interventions:              18153
+============ Simulation results (Cache 4) ============ 
+1 . number of reads:                      1042831
+2 . number of read misses:                50742
+3 . number of writes:                     297572
+4 . number of write misses:               39197
+5 . total miss rate:                      0.067098
+6 . number of writebacks:                 55856
+7 . number of cache-to-cache transfers:   35488
+8 . number of SignalRds:                  40664
+9 . number of SignalRdXs:                 18811
+10. number of SignalUpgrs                 11047
+11. number of invalidations:              34630
+12. number of interventions:              16513
+============ Simulation results (Cache 5) ============ 
+1 . number of reads:                      1041259
+2 . number of read misses:                49809
+3 . number of writes:                     297026
+4 . number of write misses:               39814
+5 . total miss rate:                      0.066969
+6 . number of writebacks:                 54937
+7 . number of cache-to-cache transfers:   33937
+8 . number of SignalRds:                  41466
+9 . number of SignalRdXs:                 19513
+10. number of SignalUpgrs                 10824
+11. number of invalidations:              34424
+12. number of interventions:              15294
+============ Simulation results (Cache 6) ============ 
+1 . number of reads:                      1040744
+2 . number of read misses:                49260
+3 . number of writes:                     296934
+4 . number of write misses:               35740
+5 . total miss rate:                      0.063543
+6 . number of writebacks:                 50391
+7 . number of cache-to-cache transfers:   30958
+8 . number of SignalRds:                  41053
+9 . number of SignalRdXs:                 16610
+10. number of SignalUpgrs                 10280
+11. number of invalidations:              31266
+12. number of interventions:              14537
+============ Simulation results (Cache 7) ============ 
+1 . number of reads:                      1041317
+2 . number of read misses:                52890
+3 . number of writes:                     296737
+4 . number of write misses:               38891
+5 . total miss rate:                      0.068593
+6 . number of writebacks:                 53846
+7 . number of cache-to-cache transfers:   34565
+8 . number of SignalRds:                  44253
+9 . number of SignalRdXs:                 18820
+10. number of SignalUpgrs                 10362
+11. number of invalidations:              34843
+12. number of interventions:              14579
+============ Simulation results (Cache 8) ============ 
+1 . number of reads:                      1042689
+2 . number of read misses:                50466
+3 . number of writes:                     297031
+4 . number of write misses:               40118
+5 . total miss rate:                      0.067614
+6 . number of writebacks:                 57021
+7 . number of cache-to-cache transfers:   36839
+8 . number of SignalRds:                  40396
+9 . number of SignalRdXs:                 20689
+10. number of SignalUpgrs                 11165
+11. number of invalidations:              36192
+12. number of interventions:              17160
+============ Simulation results (Cache 9) ============ 
+1 . number of reads:                      1043039
+2 . number of read misses:                52142
+3 . number of writes:                     297252
+4 . number of write misses:               40861
+5 . total miss rate:                      0.069390
+6 . number of writebacks:                 57225
+7 . number of cache-to-cache transfers:   37873
+8 . number of SignalRds:                  43184
+9 . number of SignalRdXs:                 21510
+10. number of SignalUpgrs                 11828
+11. number of invalidations:              37060
+12. number of interventions:              16147
+============ Simulation results (Cache 10) ============ 
+1 . number of reads:                      1029674
+2 . number of read misses:                41461
+3 . number of writes:                     295535
+4 . number of write misses:               27691
+5 . total miss rate:                      0.052182
+6 . number of writebacks:                 39723
+7 . number of cache-to-cache transfers:   20764
+8 . number of SignalRds:                  33396
+9 . number of SignalRdXs:                 9892
+10. number of SignalUpgrs                 8152
+11. number of invalidations:              20477
+12. number of interventions:              11574
+============ Simulation results (Cache 11) ============ 
+1 . number of reads:                      1025324
+2 . number of read misses:                39568
+3 . number of writes:                     294372
+4 . number of write misses:               26289
+5 . total miss rate:                      0.049903
+6 . number of writebacks:                 38872
+7 . number of cache-to-cache transfers:   19336
+8 . number of SignalRds:                  32017
+9 . number of SignalRdXs:                 8900
+10. number of SignalUpgrs                 8689
+11. number of invalidations:              19156
+12. number of interventions:              11860
+============ Simulation results (Cache 12) ============ 
+1 . number of reads:                      1042498
+2 . number of read misses:                50342
+3 . number of writes:                     296783
+4 . number of write misses:               40032
+5 . total miss rate:                      0.067479
+6 . number of writebacks:                 55545
+7 . number of cache-to-cache transfers:   36421
+8 . number of SignalRds:                  42103
+9 . number of SignalRdXs:                 20490
+10. number of SignalUpgrs                 11163
+11. number of invalidations:              36015
+12. number of interventions:              15368
+============ Simulation results (Cache 13) ============ 
+1 . number of reads:                      1022919
+2 . number of read misses:                36567
+3 . number of writes:                     293758
+4 . number of write misses:               24389
+5 . total miss rate:                      0.046295
+6 . number of writebacks:                 35844
+7 . number of cache-to-cache transfers:   17731
+8 . number of SignalRds:                  29460
+9 . number of SignalRdXs:                 8710
+10. number of SignalUpgrs                 8059
+11. number of invalidations:              17543
+12. number of interventions:              11272
+============ Simulation results (Cache 14) ============ 
+1 . number of reads:                      1039930
+2 . number of read misses:                45617
+3 . number of writes:                     296421
+4 . number of write misses:               30659
+5 . total miss rate:                      0.057078
+6 . number of writebacks:                 45268
+7 . number of cache-to-cache transfers:   25818
+8 . number of SignalRds:                  38086
+9 . number of SignalRdXs:                 12949
+10. number of SignalUpgrs                 10674
+11. number of invalidations:              25672
+12. number of interventions:              14440
+============ Simulation results (Cache 15) ============ 
+1 . number of reads:                      1020061
+2 . number of read misses:                32998
+3 . number of writes:                     292546
+4 . number of write misses:               20897
+5 . total miss rate:                      0.041060
+6 . number of writebacks:                 30897
+7 . number of cache-to-cache transfers:   13462
+8 . number of SignalRds:                  26064
+9 . number of SignalRdXs:                 5701
+10. number of SignalUpgrs                 6589
+11. number of invalidations:              13071
+12. number of interventions:              9134
