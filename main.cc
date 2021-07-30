@@ -155,7 +155,6 @@ int sharers_exclude(ulong addr, int proc_no) {
                   if (processor_cache[i]->find_line(addr) != NULL) {
 					  	cache_state state = processor_cache[i]->find_line(addr)->get_state();
                         if ( state == E || state == M || state == S) {
-							//printf("A%ld is in state %d in P%d\n",addr,state,i);
                         	count++;
                         }
                   }
