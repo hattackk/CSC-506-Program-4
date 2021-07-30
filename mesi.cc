@@ -13,7 +13,7 @@ using namespace std;
 #include "main.h"
 #include "mesi.h"
 
-static const bool debug = false;
+
 // YOUR CODE HERE
 // The below comments are for reference and might not be
 // sufficient to match the debug runs.
@@ -120,7 +120,7 @@ void MESI::PrWr(ulong addr, int processor_number) {
         if (entry != NULL) {
             // We got back a line from the directory for this. Someone else must
             // have it. Go check.
-            if (entry->get_state() == U) {
+            if (entry->get_state() == U) {// This should never happen.
                 // We found a line, but it isn't owned by anyone. So we will
                 // take it over. We are now Modified.
                 newline->set_state(M);
@@ -223,7 +223,6 @@ cache_line *MESI::allocate_line(ulong addr) {
         if (!present) {
             // No, so set it to uncached so it can be used as a free line later
             dir_line->state = U;
-            dir_line->set_dir_tag(0);
         }
     }
 
@@ -268,7 +267,7 @@ void MESI::signalRd(ulong addr, int processor_number) {
             cache2cache++;
             // Now we need to send an intervention to the other caches to let
             // them know they need to downgrade their states
-            entry->sendInt_to_sharer(addr, processor_number, num_processors);
+            entry->sendInt_to_sharer(addr, num_processors, processor_number);
             // Downgrade the state of the directory entry since we are all
             // sharers now.
             entry->set_dir_state(S_);
@@ -344,7 +343,7 @@ void MESI::signalRdX(ulong addr, int processor_number) {
             // Now we need to send an invalidation to the other caches to let
             // them know their value is no longer valid. This invalidation call
             // should also remove the processors bit from the vector/list.
-            entry->sendInv_to_sharer(addr, processor_number, num_processors);
+            entry->sendInv_to_sharer(addr, num_processors, processor_number);
             // We now need to change the state of this directory entry to EM.
             // Since we are the only ones who hold a valid entry.
             entry->set_dir_state(EM);
@@ -357,7 +356,7 @@ void MESI::signalRdX(ulong addr, int processor_number) {
             // Our state is shared, so 1 or more processors have this block in
             // shared state. Since no one is in M state a cache2cache is not
             // required. Just an invalidation is required.
-            entry->sendInv_to_sharer(addr, processor_number, num_processors);
+            entry->sendInv_to_sharer(addr, num_processors, processor_number);
             // Now that everyone else is invalidated, and by operation should
             // have their bits turned to false. We are free to move this entry
             // into a EM state.
@@ -427,7 +426,7 @@ void MESI::signalUpgr(ulong addr, int processor_number) {
             // Now we need to send an invalidation to the other caches to let
             // them know their value is no longer valid. This invalidation call
             // should also remove the processors bit from the vector/list.
-            entry->sendInv_to_sharer(addr, processor_number, num_processors);
+            entry->sendInv_to_sharer(addr, num_processors, processor_number);
             // We now need to change the state of this directory entry to EM.
             // Since we are the only ones who hold a valid entry.
             entry->set_dir_state(EM);
@@ -442,7 +441,7 @@ void MESI::signalUpgr(ulong addr, int processor_number) {
             // shared state. Since no one is in M state a cache2cache is not
             // required.
             // Just send an invalidation to the other processors.
-            entry->sendInv_to_sharer(addr, processor_number, num_processors);
+            entry->sendInv_to_sharer(addr, num_processors, processor_number);
             // Now that everyone else is invalidated, and by operation should
             // have their bits turned to false. We are free to move this entry
             // into EM state.
@@ -494,11 +493,16 @@ void MESI::Int(ulong addr) {
     cache_line *line = find_line(addr);
     if (line != NULL) {
         state = line->get_state();
-        if (state == M || state == E) {
+        if(state == E){
+            line->set_state(S);
+            interventions++;
+            write_backs++;
+        }else if (state == M ) {
             interventions++;
             line->set_state(S);
             write_backs++;
         }
+    
     }
 }
 
@@ -513,34 +517,19 @@ void MESI::Inv(ulong addr) {
     cache_state state;
     cache_line *line = find_line(addr);
     if (line != NULL) {
-        if (debug) {
-            printf("%p I'm getting invalidated?\n", line);
-        }
         state = line->get_state();
-        if (debug) {
-            printf("Invalidation state:%d\n", state);
-        }
         switch (state) {
             case E:
-                if (debug) {
-                    printf("exclu state invalidated\n");
-                }
                 invalidations++;
                 write_backs++;
                 line->set_state(I);
                 break;
             case M:
-                if (debug) {
-                    printf("mod state invalidated\n");
-                }
                 invalidations++;
                 line->set_state(I);
                 write_backs++;
                 break;
             case S:
-                if (debug) {
-                    printf("shared state invalidated\n");
-                }
                 invalidations++;
                 line->set_state(I);
                 break;
@@ -548,10 +537,7 @@ void MESI::Inv(ulong addr) {
                 printf("*");
                 /*noop*/;
         }
-        if (debug) {
-            printf("%p Final state %d\n", line, line->get_state());
-        }
     } else {
-        // printf("Line not found\n");
+         printf("Line not found\n");
     }
 }
