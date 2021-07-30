@@ -6,7 +6,7 @@
 *************************************************************/
 #include "fbv.h"
 
-static const bool debug = false;
+
 void FBV::print_vector() {
     printf("TAG:%ld\nState:%d\n", get_dir_tag(), get_state());
     for (int i = 0; i < 16; i++) {
@@ -16,11 +16,6 @@ void FBV::print_vector() {
 }
 
 void FBV::add_sharer_entry(int proc_num) {
-    if (debug) {
-        if (proc_num == 4 && get_dir_tag() == 5342208) {
-            print_vector();
-        }
-    }
     bit[proc_num] = true;
 }
 
@@ -58,30 +53,29 @@ int FBV::others_are_sharing(int proc_num, int num_proc) {
     return false;
 }
 
-void FBV::sendInt_to_sharer(ulong addr, int specific_proc, int proc_count) {
+void FBV::sendInt_to_sharer(ulong addr, int num_proc, int proc_num) {
     // YOUR CODE HERE
     //
     // Invoke the sendInt function defined in main
     // for all the processors except for proc_num
     // Make sure that you check the FBV to see if the
     // bit is set
-
-    for (int p = 0; p < proc_count; p++) {
-        if ((p != specific_proc) && bit[p]) {
+    for (int p = 0; p < num_proc; p++) {
+        if ((p != proc_num) && bit[p]) {
             sendInt(addr, p);
         }
     }
 }
 
-void FBV::sendInv_to_sharer(ulong addr, int specific_proc, int proc_count) {
+void FBV::sendInv_to_sharer(ulong addr, int num_proc, int proc_num) {
     // YOUR CODE HERE
     //
     // Invoke the sendInv function defined in main
     // for all the processors except for proc_num
     // Make sure that you check the FBV to see if the
     // bit is set
-    for (int p = 0; p < proc_count; p++) {
-        if ((p != specific_proc) && bit[p]) {
+    for (int p = 0; p < num_proc; p++) {
+        if ((p != proc_num) && bit[p]) {
             sendInv(addr, p);
             bit[p] = false;
         }
