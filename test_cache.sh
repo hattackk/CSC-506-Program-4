@@ -16,7 +16,7 @@ do
  do
   
   echo "./simulate_cache_ref 1000000 4 $blocksize 16 $protocol $swaptions_truncated" > ref.$OUTN
-  ./simulate_cache_ref 1000000 4 $blocksize 16 $protocol $swaptions_truncated >> ref.$OUTN
+  ./simulate_cache_ref 256000 4 $blocksize 16 $protocol $swaptions_truncated >> ref.$OUTN
   
   OUTN=$(($OUTN+1))
  done
