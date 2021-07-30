@@ -25,14 +25,7 @@ void FBV::add_sharer_entry(int proc_num) {
 }
 
 void FBV::remove_sharer_entry(int proc_num) {
-    if (debug) {
-        if (proc_num == 4 && get_dir_tag() == 5342208) {
-            printf("Setting P%d to false\n", proc_num);
-            print_vector();
-        }
-    }
     if (isValid(proc_num)) {
-        // printf("Setting P%d to false\n",proc_num);
         bit[proc_num] = false;
     }
     // YOUR CODE HERE
@@ -52,8 +45,6 @@ int FBV::is_cached(int num_proc) {
             }
         }
     }
-    //set_dir_state(U);
-    //set_dir_tag(0);
     return false;
 }
 
@@ -89,24 +80,11 @@ void FBV::sendInv_to_sharer(ulong addr, int specific_proc, int proc_count) {
     // for all the processors except for proc_num
     // Make sure that you check the FBV to see if the
     // bit is set
-    if (debug) {
-        printf("arg1:%d|arg2:%d\n", specific_proc, proc_count);
-        printf("We are about invalidate the following Ps\n");
-    }
     for (int p = 0; p < proc_count; p++) {
         if ((p != specific_proc) && bit[p]) {
-            if (debug) {
-                printf("%d|", p);
-            }
             sendInv(addr, p);
             bit[p] = false;
         }
-    }
-    if (debug) {
-        printf("\n");
-    }
-    if (!is_cached(proc_count)) {
-        //set_dir_state(U);
     }
 }
 bool FBV::isValid(int index) {
